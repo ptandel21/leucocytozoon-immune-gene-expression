@@ -1,0 +1,37 @@
+---
+title: "Barn Owl Gene Expression – BIOL 710"
+author: "Pinkal Tandel"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Load merged gene expression data from 6 barn owls
+gene_data <- read.csv("data:/gene_expression_data.csv")
+
+# Preview the first few rows
+head(gene_data)
+
+```
+
+```{r}
+# Number of genes and samples
+nrow(gene_data)   # Total number of genes
+ncol(gene_data)   # Number of samples + GeneID column
+
+# Check for missing values
+sum(is.na(gene_data))   # Should be 0
+
+```
+
+```{r}
+# View expression counts for MAP4K4
+gene_data[gene_data$GeneID == "MAP4K4", ]
+
+```
+
+
+
