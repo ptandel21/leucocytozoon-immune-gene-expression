@@ -34,7 +34,7 @@ Aim 1: Expand the Dataset
 Increase the number of barn owl samples infected with Leucocytozoon, building on the original RNA-seq study. This improves statistical power and robustness of observed gene expression differences.
 
 Aim 2: Focus on Key Immune Genes
-Analyze expression levels of immune-related genes (e.g., MAP4K4, HEBP1, TLR7) using both targeted statistical comparisons and global visualization tools like heatmaps. This allows for validation of specific targets and discovery of broader expression trends in infected versus uninfected barn owls.
+ Analyze expression levels of MAP4K4 and use heatmap visualization to observe global expression clustering by infection status.
 
 ## Sample Metadata
 
@@ -59,9 +59,41 @@ Analyze expression levels of immune-related genes (e.g., MAP4K4, HEBP1, TLR7) us
 
 This work supports a follow-up ddPCR experiment to quantify expression levels of key immune genes. Genes were selected based on differential expression in Caroline’s paper and relevance to *Leucocytozoon* or *Plasmodium* infection studies in birds.
 
+# **Selected Aim for Statistical Analysis** 
+
+## **Aim 2: Focus on Key Immune Genes**
+
+### **Specifically: Analyze expression levels of MAP4K4 and use heatmap visualization to observe global expression clustering by infection status**.
+
+### **Hypotheses for MAP4K4 Expression Analysis**
+
+* Null Hypothesis: There is no difference in MAP4K4 gene expression between Leucocytozoon-infected and uninfected barn owls.
+
+* Alternative Hypothesis: MAP4K4 gene expression differs between Leucocytozoon-infected and uninfected barn owls.
+
+## **Statistical Approach & Visualization Description**
+
+* To test whether MAP4K4 expression levels differ by infection status, I used a Wilcoxon rank-sum test, a non-parametric alternative to the t-test that is well-suited for small sample sizes and does not assume a normal distribution.
+
+* I visualized expression with a boxplot grouped by infection status (Positive vs. Negative) and overlaid individual sample points to show spread and outliers. I used a viridis color palette, which is colorblind-friendly.
+
+* In addition, I created a heatmap of the top 75 most variable genes, standardized using z-scores across rows, and hierarchically clustered both genes and samples. This allows visual identification of gene clusters and expression trends related to infection status.
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load Libraries
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tibble)
+library(tidyr)
+library(pheatmap)
+library(RColorBrewer)
+library(viridis)
 ```
 
 ```{r}
@@ -72,6 +104,8 @@ gene_data <- read.csv("data/gene_expression_data.csv")
 head(gene_data)
 
 ```
+
+## Summary Statistics
 
 ```{r}
 # Number of genes and samples
@@ -88,6 +122,79 @@ sum(is.na(gene_data))   # Should be 0
 gene_data[gene_data$GeneID == "MAP4K4", ]
 
 ```
+## Heatmap: Top 75 Most Variable Genes
+
+```{r}
+gene_matrix <- gene_data %>% column_to_rownames("GeneID") %>% as.matrix()
+var_genes <- apply(gene_matrix, 1, var)
+top_genes <- sort(var_genes, decreasing = TRUE)[1:75]
+filtered_matrix <- gene_matrix[names(top_genes), ]
+z_matrix <- t(scale(t(filtered_matrix)))
+
+annotation_col <- data.frame(
+  Condition = c("Positive", "Positive", "Negative", "Positive", "Negative", "Negative")
+)
+rownames(annotation_col) <- colnames(z_matrix)
+
+pheatmap(
+  z_matrix,
+  annotation_col = annotation_col,
+  color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100),
+  clustering_distance_rows = "euclidean",
+  clustering_distance_cols = "euclidean",
+  clustering_method = "complete",
+  fontsize_row = 4,
+  fontsize_col = 12,
+  cellheight = 6,
+  cellwidth = 20,
+  angle_col = 45,
+  main = "Top 75 Most Variable Genes across 6 Barn Owls"
+)
+```
+
+## MAP4K4 Expression Analysis
+
+```{r}
+sample_info <- data.frame(
+  Sample = colnames(gene_data)[-1],
+  Condition = c("Positive", "Positive", "Negative", "Positive", "Negative", "Negative")
+)
+
+map4k4 <- gene_data %>%
+  filter(GeneID == "MAP4K4") %>%
+  pivot_longer(-GeneID, names_to = "Sample", values_to = "Expression") %>%
+  left_join(sample_info, by = "Sample")
+
+# Plot
+# This is GOOD (directly plotted)
+ggplot(map4k4, aes(x = Condition, y = Expression, fill = Condition)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.1, size = 3, alpha = 0.8) +
+  scale_fill_viridis_d(option = "D") +
+  theme_minimal() +  # This is fine
+  labs(
+    title = "MAP4K4 Expression by Infection Status",
+    y = "Normalized Expression",
+    x = "Condition"
+  )
+
+```
+
+## Wilcoxon Test
+
+```{r}
+wilcox.test(Expression ~ Condition, data = map4k4)
+```
+
+## **Results** 
+
+* The boxplot shows that MAP4K4 expression appears higher in uninfected owls compared to infected ones, suggesting a potential immune-related downregulation in response to infection.
+
+* The Wilcoxon test yielded a p-value of 0.1, which is above the typical significance of 0.05, meaning we do not reject the null hypothesis. However, the small sample size limits statistical power. This is why aim 1 works towards increasing replicates. 
+
+* The heatmap reveals clear clustering of gene expression patterns by infection status, supporting the idea that infection influences broader immune gene expression, even if individual gene tests lack statistical power, which could be increased by following aim1 and adding more replicates. 
+
+
 
 ## References
 
