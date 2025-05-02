@@ -34,7 +34,7 @@ Aim 1: Expand the Dataset
 Increase the number of barn owl samples infected with Leucocytozoon, building on the original RNA-seq study. This improves statistical power and robustness of observed gene expression differences.
 
 Aim 2: Focus on Key Immune Genes
-Analyze expression levels of a small number of immune-related genes such as HEBP1, MAP4K4, TLR7, IFNG identified in prior work. Prepare for downstream ddPCR validation of these genes in additional owl samples.
+Analyze expression levels of immune-related genes (e.g., MAP4K4, HEBP1, TLR7) using both targeted statistical comparisons and global visualization tools like heatmaps. This allows for validation of specific targets and discovery of broader expression trends in infected versus uninfected barn owls.
 
 ## Sample Metadata
 
