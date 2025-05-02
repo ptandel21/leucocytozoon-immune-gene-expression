@@ -8,7 +8,7 @@ This repository contains RNA-seq data and analysis scripts from a gene expressio
 - Prepare dataset for downstream immune gene analysis and ddPCR primer design
 - Validate RNA-seq expression patterns for genes like **HEBP1**, **MAP4K4**, and others
 - Build a clean GitHub repository with well-documented dataset and metadata
-- 
+  
 ##  Repository Contents
 
 - `data/`: Folder containing merged gene expression `.csv` and `DatasetCard.md`
