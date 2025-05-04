@@ -194,6 +194,8 @@ wilcox.test(Expression ~ Condition, data = map4k4)
 
 * The heatmap reveals clear clustering of gene expression patterns by infection status, supporting the idea that infection influences broader immune gene expression, even if individual gene tests lack statistical power, which could be increased by following aim1 and adding more replicates. 
 
+## Next Steps:
+To strengthen these findings, the next step is to use ddPCR to validate MAP4K4 expression across additional owl samples. Expanding the dataset and using more sensitive quantification will help confirm whether MAP4K4 is consistently associated with Leucocytozoon infection and support its use as an immune marker.
 
 
 ## References
