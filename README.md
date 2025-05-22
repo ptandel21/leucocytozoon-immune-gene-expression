@@ -11,7 +11,7 @@ This repository contains RNA-seq data and analysis scripts from a gene expressio
   
 ##  Repository Contents
 
-- `data/`: Folder containing merged gene expression `.csv` and `DatasetCard.md`
+- `data`: Folder containing merged gene expression `.csv` and `DatasetCard.md`
 - `owl_gene_analysis.Rmd`: Project R Markdown file with code, figures, and interpretation
 - `README.md`: Project summary and repo structure
 
