@@ -5,6 +5,10 @@ output:
   pdf_document: default
   html_document: default
 ---
+
+GitHub Repository: [https://github.com/ptandel21/leucocytozoon-immune-gene-expression](https://github.com/ptandel21/leucocytozoon-immune-gene-expression)  
+Dataset Documentation: [DatasetCard.md](https://github.com/ptandel21/leucocytozoon-immune-gene-expression/blob/main/DatasetCard.md)
+
 ## Introduction
 
 Malaria is the most common parasitic disease in humans, transmitted by the bite of anopheline mosquitoes carrying Plasmodium spp. parasites [1]. It affects hundreds of millions globally, with an estimated 263 million cases in 2023, resulting in 597,000 deaths across 83 countries [2]. Plasmodium parasites infect red blood cells and belong to the order Haemosporidia, which also includes avian haemosporidians such as Leucocytozoon species. These parasites cause malaria-like symptoms in birds and have been associated with the decline of certain bird species [3]. Leucocytozoon infections are known to induce significant immune responses and physiological stress in birds.
@@ -100,6 +104,7 @@ library(viridis)
 # Load merged gene expression data from 6 barn owls
 gene_data <- read.csv("data/gene_expression_data.csv")
 
+
 # Preview the first few rows
 head(gene_data)
 
@@ -186,7 +191,7 @@ ggplot(map4k4, aes(x = Condition, y = Expression, fill = Condition)) +
 wilcox.test(Expression ~ Condition, data = map4k4)
 ```
 
-## **Results** 
+## ** Interpretation of Results** 
 
 * The boxplot shows that MAP4K4 expression appears higher in uninfected owls compared to infected ones, suggesting a potential immune-related downregulation in response to infection.
 
@@ -194,9 +199,8 @@ wilcox.test(Expression ~ Condition, data = map4k4)
 
 * The heatmap reveals clear clustering of gene expression patterns by infection status, supporting the idea that infection influences broader immune gene expression, even if individual gene tests lack statistical power, which could be increased by following aim1 and adding more replicates. 
 
-## Next Steps:
+Next Steps:
 To strengthen these findings, the next step is to use ddPCR to validate MAP4K4 expression across additional owl samples. Expanding the dataset and using more sensitive quantification will help confirm whether MAP4K4 is consistently associated with Leucocytozoon infection and support its use as an immune marker.
-
 
 ## References
 
